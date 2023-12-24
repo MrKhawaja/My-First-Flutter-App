@@ -1,47 +1,54 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'quote.dart';
+import 'quote_card.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(
+    home: QuoteList(),
+  ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class QuoteList extends StatefulWidget {
+  const QuoteList({super.key});
 
-  final int value = 0;
+  @override
+  State<QuoteList> createState() => _QuoteListState();
+}
+
+class _QuoteListState extends State<QuoteList> {
+  List<Quote> quotes = [
+    Quote("Ebarer Shongram Amader Muktir Shongram", "Alvee Hawak"),
+    Quote("Ebarer Shongram Amader Shadhinotar Shongram", "Alvee Hawak"),
+    Quote("Joy Bangla", "Alvee Hawak")
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Home()
-      );
-  }
-}
-
-class Home extends StatelessWidget {
-  const Home({super.key});
-
-  @override
-  Widget build(BuildContext context){
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Dkash',style:TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
-          centerTitle: true,
-          backgroundColor: Colors.black,
-        ),
-        body: Container(
-          color:Colors.black,
-          padding: EdgeInsets.symmetric(horizontal:150.0,vertical: 100),
-          child:Text("hehe",style: TextStyle(color:Colors.white))
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () { },
-          backgroundColor: Colors.black,
-          child: const Text("+",style:TextStyle(color:Colors.white,fontWeight: FontWeight.bold)),
-        ),
-        );
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        title: const Text("Awesome Quotes"),
+        centerTitle: true,
+        backgroundColor: Colors.redAccent,
+      ),
+      body: Column(
+        children: [
+          Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: quotes
+                  .map((quote) => QuoteCard(
+                      quote: quote,
+                      delete: () {
+                        setState(() {
+                          quotes.remove(quote);
+                        });
+                      }))
+                  .toList()),
+        ],
+      ),
+    );
   }
-
 }
-
